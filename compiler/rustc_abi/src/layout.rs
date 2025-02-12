@@ -7,7 +7,7 @@ use rustc_index::Idx;
 use tracing::debug;
 
 use crate::{
-    AbiAndPrefAlign, Align, BackendRepr, FieldsShape, HasDataLayout, IndexSlice, IndexVec, Integer,
+    AbiAlign, Align, BackendRepr, FieldsShape, HasDataLayout, IndexSlice, IndexVec, Integer,
     LayoutData, Niche, NonZeroUsize, Primitive, ReprOptions, Scalar, Size, StructKind, TagEncoding,
     Variants, WrappingRange,
 };
@@ -361,13 +361,13 @@ impl<Cx: HasDataLayout> LayoutCalculator<Cx> {
         }
 
         if let Some(pack) = repr.pack {
-            align = align.min(AbiAndPrefAlign::new(pack));
+            align = align.min(AbiAlign::new(pack));
         }
         // The unadjusted ABI alignment does not include repr(align), but does include repr(pack).
         // See documentation on `LayoutS::unadjusted_abi_align`.
         let unadjusted_abi_align = align.abi;
         if let Some(repr_align) = repr.align {
-            align = align.max(AbiAndPrefAlign::new(repr_align));
+            align = align.max(AbiAlign::new(repr_align));
         }
         // `align` must not be modified after this, or `unadjusted_abi_align` could be inaccurate.
         let align = align;
@@ -1203,7 +1203,7 @@ impl<Cx: HasDataLayout> LayoutCalculator<Cx> {
         if let StructKind::Prefixed(prefix_size, prefix_align) = kind {
             let prefix_align =
                 if let Some(pack) = pack { prefix_align.min(pack) } else { prefix_align };
-            align = align.max(AbiAndPrefAlign::new(prefix_align));
+            align = align.max(AbiAlign::new(prefix_align));
             offset = prefix_size.align_to(prefix_align);
         }
         for &i in &inverse_memory_index {
@@ -1222,7 +1222,7 @@ impl<Cx: HasDataLayout> LayoutCalculator<Cx> {
 
             // Invariant: offset < dl.obj_size_bound() <= 1<<61
             let field_align = if let Some(pack) = pack {
-                field.align.min(AbiAndPrefAlign::new(pack))
+                field.align.min(AbiAlign::new(pack))
             } else {
                 field.align
             };
@@ -1256,7 +1256,7 @@ impl<Cx: HasDataLayout> LayoutCalculator<Cx> {
         // See documentation on `LayoutS::unadjusted_abi_align`.
         let unadjusted_abi_align = align.abi;
         if let Some(repr_align) = repr.align {
-            align = align.max(AbiAndPrefAlign::new(repr_align));
+            align = align.max(AbiAlign::new(repr_align));
         }
         // `align` must not be modified after this point, or `unadjusted_abi_align` could be inaccurate.
         let align = align;

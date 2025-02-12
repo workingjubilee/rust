@@ -210,22 +210,22 @@ impl ReprOptions {
 #[derive(Debug, PartialEq, Eq)]
 pub struct TargetDataLayout {
     pub endian: Endian,
-    pub i1_align: AbiAndPrefAlign,
-    pub i8_align: AbiAndPrefAlign,
-    pub i16_align: AbiAndPrefAlign,
-    pub i32_align: AbiAndPrefAlign,
-    pub i64_align: AbiAndPrefAlign,
-    pub i128_align: AbiAndPrefAlign,
-    pub f16_align: AbiAndPrefAlign,
-    pub f32_align: AbiAndPrefAlign,
-    pub f64_align: AbiAndPrefAlign,
-    pub f128_align: AbiAndPrefAlign,
+    pub i1_align: AbiAlign,
+    pub i8_align: AbiAlign,
+    pub i16_align: AbiAlign,
+    pub i32_align: AbiAlign,
+    pub i64_align: AbiAlign,
+    pub i128_align: AbiAlign,
+    pub f16_align: AbiAlign,
+    pub f32_align: AbiAlign,
+    pub f64_align: AbiAlign,
+    pub f128_align: AbiAlign,
     pub pointer_size: Size,
-    pub pointer_align: AbiAndPrefAlign,
-    pub aggregate_align: AbiAndPrefAlign,
+    pub pointer_align: AbiAlign,
+    pub aggregate_align: AbiAlign,
 
     /// Alignments for vector types.
-    pub vector_align: Vec<(Size, AbiAndPrefAlign)>,
+    pub vector_align: Vec<(Size, AbiAlign)>,
 
     pub instruction_address_space: AddressSpace,
 
@@ -241,22 +241,22 @@ impl Default for TargetDataLayout {
         let align = |bits| Align::from_bits(bits).unwrap();
         TargetDataLayout {
             endian: Endian::Big,
-            i1_align: AbiAndPrefAlign::new(align(8)),
-            i8_align: AbiAndPrefAlign::new(align(8)),
-            i16_align: AbiAndPrefAlign::new(align(16)),
-            i32_align: AbiAndPrefAlign::new(align(32)),
-            i64_align: AbiAndPrefAlign { abi: align(32), pref: align(64) },
-            i128_align: AbiAndPrefAlign { abi: align(32), pref: align(64) },
-            f16_align: AbiAndPrefAlign::new(align(16)),
-            f32_align: AbiAndPrefAlign::new(align(32)),
-            f64_align: AbiAndPrefAlign::new(align(64)),
-            f128_align: AbiAndPrefAlign::new(align(128)),
+            i1_align: AbiAlign::new(align(8)),
+            i8_align: AbiAlign::new(align(8)),
+            i16_align: AbiAlign::new(align(16)),
+            i32_align: AbiAlign::new(align(32)),
+            i64_align: AbiAlign::new(align(32)),
+            i128_align: AbiAlign::new(align(32)),
+            f16_align: AbiAlign::new(align(16)),
+            f32_align: AbiAlign::new(align(32)),
+            f64_align: AbiAlign::new(align(64)),
+            f128_align: AbiAlign::new(align(128)),
             pointer_size: Size::from_bits(64),
-            pointer_align: AbiAndPrefAlign::new(align(64)),
-            aggregate_align: AbiAndPrefAlign { abi: align(0), pref: align(64) },
+            pointer_align: AbiAlign::new(align(64)),
+            aggregate_align: AbiAlign { abi: align(8) },
             vector_align: vec![
-                (Size::from_bits(64), AbiAndPrefAlign::new(align(64))),
-                (Size::from_bits(128), AbiAndPrefAlign::new(align(128))),
+                (Size::from_bits(64), AbiAlign::new(align(64))),
+                (Size::from_bits(128), AbiAlign::new(align(128))),
             ],
             instruction_address_space: AddressSpace::DATA,
             c_enum_min_size: Integer::I32,
@@ -314,8 +314,7 @@ impl TargetDataLayout {
                     .map_err(|err| TargetDataLayoutErrors::InvalidAlignment { cause, err })
             };
             let abi = parse_bits(s[0], "alignment", cause)?;
-            let pref = s.get(1).map_or(Ok(abi), |pref| parse_bits(pref, "alignment", cause))?;
-            Ok(AbiAndPrefAlign { abi: align_from_bits(abi)?, pref: align_from_bits(pref)? })
+            Ok(AbiAlign::new(align_from_bits(abi)?))
         };
 
         let mut dl = TargetDataLayout::default();
@@ -409,7 +408,7 @@ impl TargetDataLayout {
     }
 
     #[inline]
-    pub fn vector_align(&self, vec_size: Size) -> AbiAndPrefAlign {
+    pub fn vector_align(&self, vec_size: Size) -> AbiAlign {
         for &(size, align) in &self.vector_align {
             if size == vec_size {
                 return align;
@@ -417,7 +416,7 @@ impl TargetDataLayout {
         }
         // Default to natural alignment, which is what LLVM does.
         // That is, use the size, rounded up to a power of 2.
-        AbiAndPrefAlign::new(Align::from_bytes(vec_size.bytes().next_power_of_two()).unwrap())
+        AbiAlign::new(Align::from_bytes(vec_size.bytes().next_power_of_two()).unwrap())
     }
 }
 
@@ -838,25 +837,24 @@ impl Align {
 /// It is of effectively no consequence for layout in structs and on the stack.
 #[derive(Copy, Clone, PartialEq, Eq, Hash, Debug)]
 #[cfg_attr(feature = "nightly", derive(HashStable_Generic))]
-pub struct AbiAndPrefAlign {
+pub struct AbiAlign {
     pub abi: Align,
-    pub pref: Align,
 }
 
-impl AbiAndPrefAlign {
+impl AbiAlign {
     #[inline]
-    pub fn new(align: Align) -> AbiAndPrefAlign {
-        AbiAndPrefAlign { abi: align, pref: align }
+    pub fn new(align: Align) -> AbiAlign {
+        AbiAlign { abi: align }
     }
 
     #[inline]
-    pub fn min(self, other: AbiAndPrefAlign) -> AbiAndPrefAlign {
-        AbiAndPrefAlign { abi: self.abi.min(other.abi), pref: self.pref.min(other.pref) }
+    pub fn min(self, other: AbiAlign) -> AbiAlign {
+        AbiAlign { abi: self.abi.min(other.abi) }
     }
 
     #[inline]
-    pub fn max(self, other: AbiAndPrefAlign) -> AbiAndPrefAlign {
-        AbiAndPrefAlign { abi: self.abi.max(other.abi), pref: self.pref.max(other.pref) }
+    pub fn max(self, other: AbiAlign) -> AbiAlign {
+        AbiAlign { abi: self.abi.max(other.abi) }
     }
 }
 
@@ -916,7 +914,7 @@ impl Integer {
         }
     }
 
-    pub fn align<C: HasDataLayout>(self, cx: &C) -> AbiAndPrefAlign {
+    pub fn align<C: HasDataLayout>(self, cx: &C) -> AbiAlign {
         use Integer::*;
         let dl = cx.data_layout();
 
@@ -1029,7 +1027,7 @@ impl Float {
         }
     }
 
-    pub fn align<C: HasDataLayout>(self, cx: &C) -> AbiAndPrefAlign {
+    pub fn align<C: HasDataLayout>(self, cx: &C) -> AbiAlign {
         use Float::*;
         let dl = cx.data_layout();
 
@@ -1073,7 +1071,7 @@ impl Primitive {
         }
     }
 
-    pub fn align<C: HasDataLayout>(self, cx: &C) -> AbiAndPrefAlign {
+    pub fn align<C: HasDataLayout>(self, cx: &C) -> AbiAlign {
         use Primitive::*;
         let dl = cx.data_layout();
 
@@ -1196,7 +1194,7 @@ impl Scalar {
         }
     }
 
-    pub fn align(self, cx: &impl HasDataLayout) -> AbiAndPrefAlign {
+    pub fn align(self, cx: &impl HasDataLayout) -> AbiAlign {
         self.primitive().align(cx)
     }
 
@@ -1464,7 +1462,7 @@ impl BackendRepr {
     }
 
     /// Returns the fixed alignment of this ABI, if any is mandated.
-    pub fn inherent_align<C: HasDataLayout>(&self, cx: &C) -> Option<AbiAndPrefAlign> {
+    pub fn inherent_align<C: HasDataLayout>(&self, cx: &C) -> Option<AbiAlign> {
         Some(match *self {
             BackendRepr::Scalar(s) => s.align(cx),
             BackendRepr::ScalarPair(s1, s2) => s1.align(cx).max(s2.align(cx)),
@@ -1705,7 +1703,7 @@ pub struct LayoutData<FieldIdx: Idx, VariantIdx: Idx> {
     /// (i.e. outside of its `valid_range`), if it exists.
     pub largest_niche: Option<Niche>,
 
-    pub align: AbiAndPrefAlign,
+    pub align: AbiAlign,
     pub size: Size,
 
     /// The largest alignment explicitly requested with `repr(align)` on this type or any field.

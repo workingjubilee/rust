@@ -1,8 +1,7 @@
 error: layout_of(MissingPayloadField) = Layout {
            size: Size(2 bytes),
-           align: AbiAndPrefAlign {
+           align: AbiAlign {
                abi: Align(1 bytes),
-               pref: $PREF_ALIGN,
            },
            abi: ScalarPair(
                Initialized {
@@ -50,9 +49,8 @@ error: layout_of(MissingPayloadField) = Layout {
                variants: [
                    Layout {
                        size: Size(2 bytes),
-                       align: AbiAndPrefAlign {
+                       align: AbiAlign {
                            abi: Align(1 bytes),
-                           pref: $PREF_ALIGN,
                        },
                        abi: ScalarPair(
                            Initialized {
@@ -87,9 +85,8 @@ error: layout_of(MissingPayloadField) = Layout {
                    },
                    Layout {
                        size: Size(1 bytes),
-                       align: AbiAndPrefAlign {
+                       align: AbiAlign {
                            abi: Align(1 bytes),
-                           pref: $PREF_ALIGN,
                        },
                        abi: Memory {
                            sized: true,
@@ -119,9 +116,8 @@ LL | pub enum MissingPayloadField {
 
 error: layout_of(CommonPayloadField) = Layout {
            size: Size(2 bytes),
-           align: AbiAndPrefAlign {
+           align: AbiAlign {
                abi: Align(1 bytes),
-               pref: $PREF_ALIGN,
            },
            abi: ScalarPair(
                Initialized {
@@ -170,9 +166,8 @@ error: layout_of(CommonPayloadField) = Layout {
                variants: [
                    Layout {
                        size: Size(2 bytes),
-                       align: AbiAndPrefAlign {
+                       align: AbiAlign {
                            abi: Align(1 bytes),
-                           pref: $PREF_ALIGN,
                        },
                        abi: ScalarPair(
                            Initialized {
@@ -208,9 +203,8 @@ error: layout_of(CommonPayloadField) = Layout {
                    },
                    Layout {
                        size: Size(2 bytes),
-                       align: AbiAndPrefAlign {
+                       align: AbiAlign {
                            abi: Align(1 bytes),
-                           pref: $PREF_ALIGN,
                        },
                        abi: ScalarPair(
                            Initialized {
@@ -257,9 +251,8 @@ LL | pub enum CommonPayloadField {
 
 error: layout_of(CommonPayloadFieldIsMaybeUninit) = Layout {
            size: Size(2 bytes),
-           align: AbiAndPrefAlign {
+           align: AbiAlign {
                abi: Align(1 bytes),
-               pref: $PREF_ALIGN,
            },
            abi: ScalarPair(
                Initialized {
@@ -307,9 +300,8 @@ error: layout_of(CommonPayloadFieldIsMaybeUninit) = Layout {
                variants: [
                    Layout {
                        size: Size(2 bytes),
-                       align: AbiAndPrefAlign {
+                       align: AbiAlign {
                            abi: Align(1 bytes),
-                           pref: $PREF_ALIGN,
                        },
                        abi: ScalarPair(
                            Initialized {
@@ -344,9 +336,8 @@ error: layout_of(CommonPayloadFieldIsMaybeUninit) = Layout {
                    },
                    Layout {
                        size: Size(2 bytes),
-                       align: AbiAndPrefAlign {
+                       align: AbiAlign {
                            abi: Align(1 bytes),
-                           pref: $PREF_ALIGN,
                        },
                        abi: ScalarPair(
                            Initialized {
@@ -392,9 +383,8 @@ LL | pub enum CommonPayloadFieldIsMaybeUninit {
 
 error: layout_of(NicheFirst) = Layout {
            size: Size(2 bytes),
-           align: AbiAndPrefAlign {
+           align: AbiAlign {
                abi: Align(1 bytes),
-               pref: $PREF_ALIGN,
            },
            abi: ScalarPair(
                Initialized {
@@ -446,9 +436,8 @@ error: layout_of(NicheFirst) = Layout {
                variants: [
                    Layout {
                        size: Size(2 bytes),
-                       align: AbiAndPrefAlign {
+                       align: AbiAlign {
                            abi: Align(1 bytes),
-                           pref: $PREF_ALIGN,
                        },
                        abi: ScalarPair(
                            Initialized {
@@ -495,9 +484,8 @@ error: layout_of(NicheFirst) = Layout {
                    },
                    Layout {
                        size: Size(0 bytes),
-                       align: AbiAndPrefAlign {
+                       align: AbiAlign {
                            abi: Align(1 bytes),
-                           pref: $PREF_ALIGN,
                        },
                        abi: Memory {
                            sized: true,
@@ -516,9 +504,8 @@ error: layout_of(NicheFirst) = Layout {
                    },
                    Layout {
                        size: Size(0 bytes),
-                       align: AbiAndPrefAlign {
+                       align: AbiAlign {
                            abi: Align(1 bytes),
-                           pref: $PREF_ALIGN,
                        },
                        abi: Memory {
                            sized: true,
@@ -548,9 +535,8 @@ LL | pub enum NicheFirst {
 
 error: layout_of(NicheSecond) = Layout {
            size: Size(2 bytes),
-           align: AbiAndPrefAlign {
+           align: AbiAlign {
                abi: Align(1 bytes),
-               pref: $PREF_ALIGN,
            },
            abi: ScalarPair(
                Initialized {
@@ -602,9 +588,8 @@ error: layout_of(NicheSecond) = Layout {
                variants: [
                    Layout {
                        size: Size(2 bytes),
-                       align: AbiAndPrefAlign {
+                       align: AbiAlign {
                            abi: Align(1 bytes),
-                           pref: $PREF_ALIGN,
                        },
                        abi: ScalarPair(
                            Initialized {
@@ -651,9 +636,8 @@ error: layout_of(NicheSecond) = Layout {
                    },
                    Layout {
                        size: Size(0 bytes),
-                       align: AbiAndPrefAlign {
+                       align: AbiAlign {
                            abi: Align(1 bytes),
-                           pref: $PREF_ALIGN,
                        },
                        abi: Memory {
                            sized: true,
@@ -672,9 +656,8 @@ error: layout_of(NicheSecond) = Layout {
                    },
                    Layout {
                        size: Size(0 bytes),
-                       align: AbiAndPrefAlign {
+                       align: AbiAlign {
                            abi: Align(1 bytes),
-                           pref: $PREF_ALIGN,
                        },
                        abi: Memory {
                            sized: true,

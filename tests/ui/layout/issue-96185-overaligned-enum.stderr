@@ -1,8 +1,7 @@
 error: layout_of(Aligned1) = Layout {
            size: Size(8 bytes),
-           align: AbiAndPrefAlign {
+           align: AbiAlign {
                abi: Align(8 bytes),
-               pref: $PREF_ALIGN,
            },
            abi: Memory {
                sized: true,
@@ -38,9 +37,8 @@ error: layout_of(Aligned1) = Layout {
                variants: [
                    Layout {
                        size: Size(8 bytes),
-                       align: AbiAndPrefAlign {
+                       align: AbiAlign {
                            abi: Align(8 bytes),
-                           pref: $PREF_ALIGN,
                        },
                        abi: Memory {
                            sized: true,
@@ -61,9 +59,8 @@ error: layout_of(Aligned1) = Layout {
                    },
                    Layout {
                        size: Size(8 bytes),
-                       align: AbiAndPrefAlign {
+                       align: AbiAlign {
                            abi: Align(8 bytes),
-                           pref: $PREF_ALIGN,
                        },
                        abi: Memory {
                            sized: true,
@@ -97,9 +94,8 @@ LL | pub enum Aligned1 {
 
 error: layout_of(Aligned2) = Layout {
            size: Size(1 bytes),
-           align: AbiAndPrefAlign {
+           align: AbiAlign {
                abi: Align(1 bytes),
-               pref: $PREF_ALIGN,
            },
            abi: Scalar(
                Initialized {
@@ -141,9 +137,8 @@ error: layout_of(Aligned2) = Layout {
                variants: [
                    Layout {
                        size: Size(1 bytes),
-                       align: AbiAndPrefAlign {
+                       align: AbiAlign {
                            abi: Align(1 bytes),
-                           pref: $PREF_ALIGN,
                        },
                        abi: Memory {
                            sized: true,
@@ -164,9 +159,8 @@ error: layout_of(Aligned2) = Layout {
                    },
                    Layout {
                        size: Size(1 bytes),
-                       align: AbiAndPrefAlign {
+                       align: AbiAlign {
                            abi: Align(1 bytes),
-                           pref: $PREF_ALIGN,
                        },
                        abi: Memory {
                            sized: true,

@@ -1,8 +1,7 @@
 error: layout_of(UnivariantU8) = Layout {
            size: Size(1 bytes),
-           align: AbiAndPrefAlign {
+           align: AbiAlign {
                abi: Align(1 bytes),
-               pref: $SOME_ALIGN,
            },
            abi: Uninhabited,
            fields: Arbitrary {
@@ -36,9 +35,8 @@ error: layout_of(UnivariantU8) = Layout {
                variants: [
                    Layout {
                        size: Size(1 bytes),
-                       align: AbiAndPrefAlign {
+                       align: AbiAlign {
                            abi: Align(1 bytes),
-                           pref: $SOME_ALIGN,
                        },
                        abi: Uninhabited,
                        fields: Arbitrary {
@@ -70,9 +68,8 @@ LL | enum UnivariantU8 {
 
 error: layout_of(TwoVariantsU8) = Layout {
            size: Size(2 bytes),
-           align: AbiAndPrefAlign {
+           align: AbiAlign {
                abi: Align(1 bytes),
-               pref: $SOME_ALIGN,
            },
            abi: ScalarPair(
                Initialized {
@@ -120,9 +117,8 @@ error: layout_of(TwoVariantsU8) = Layout {
                variants: [
                    Layout {
                        size: Size(1 bytes),
-                       align: AbiAndPrefAlign {
+                       align: AbiAlign {
                            abi: Align(1 bytes),
-                           pref: $SOME_ALIGN,
                        },
                        abi: Uninhabited,
                        fields: Arbitrary {
@@ -143,9 +139,8 @@ error: layout_of(TwoVariantsU8) = Layout {
                    },
                    Layout {
                        size: Size(2 bytes),
-                       align: AbiAndPrefAlign {
+                       align: AbiAlign {
                            abi: Align(1 bytes),
-                           pref: $SOME_ALIGN,
                        },
                        abi: ScalarPair(
                            Initialized {
@@ -191,9 +186,8 @@ LL | enum TwoVariantsU8 {
 
 error: layout_of(DeadBranchHasOtherFieldU8) = Layout {
            size: Size(16 bytes),
-           align: AbiAndPrefAlign {
+           align: AbiAlign {
                abi: Align(8 bytes),
-               pref: $SOME_ALIGN,
            },
            abi: Memory {
                sized: true,
@@ -229,9 +223,8 @@ error: layout_of(DeadBranchHasOtherFieldU8) = Layout {
                variants: [
                    Layout {
                        size: Size(16 bytes),
-                       align: AbiAndPrefAlign {
+                       align: AbiAlign {
                            abi: Align(8 bytes),
-                           pref: $SOME_ALIGN,
                        },
                        abi: Uninhabited,
                        fields: Arbitrary {
@@ -256,9 +249,8 @@ error: layout_of(DeadBranchHasOtherFieldU8) = Layout {
                    },
                    Layout {
                        size: Size(16 bytes),
-                       align: AbiAndPrefAlign {
+                       align: AbiAlign {
                            abi: Align(8 bytes),
-                           pref: $SOME_ALIGN,
                        },
                        abi: Memory {
                            sized: true,

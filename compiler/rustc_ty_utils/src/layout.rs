@@ -5,7 +5,7 @@ use hir::def_id::DefId;
 use rustc_abi::Integer::{I8, I32};
 use rustc_abi::Primitive::{self, Float, Int, Pointer};
 use rustc_abi::{
-    AbiAndPrefAlign, AddressSpace, Align, BackendRepr, FIRST_VARIANT, FieldIdx, FieldsShape,
+    AbiAlign, AddressSpace, Align, BackendRepr, FIRST_VARIANT, FieldIdx, FieldsShape,
     HasDataLayout, Layout, LayoutCalculatorError, LayoutData, Niche, ReprOptions, Scalar, Size,
     StructKind, TagEncoding, VariantIdx, Variants, WrappingRange,
 };
@@ -560,13 +560,7 @@ fn layout_of_uncached<'tcx>(
                 // Non-power-of-two vectors have padding up to the next power-of-two.
                 // If we're a packed repr, remove the padding while keeping the alignment as close
                 // to a vector as possible.
-                (
-                    BackendRepr::Memory { sized: true },
-                    AbiAndPrefAlign {
-                        abi: Align::max_for_offset(size),
-                        pref: dl.vector_align(size).pref,
-                    },
-                )
+                (BackendRepr::Memory { sized: true }, AbiAlign { abi: Align::max_for_offset(size) })
             } else {
                 (BackendRepr::Vector { element: e_abi, count: e_len }, dl.vector_align(size))
             };
